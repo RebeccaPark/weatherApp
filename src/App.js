@@ -1,16 +1,24 @@
-import React, { useEffect } from 'react';
+import React, { useReducer } from 'react';
 import './App.css';
 
 import { SearchArea } from './components/SearchArea';
+import { Graph } from './components/Graph';
+import { weatherReducer, initialState } from './store/reducer';
 
-import { getRequest } from './util/api';
-
+export const stateContext = React.createContext();
+export const dispatchContext = React.createContext();
 
 function App() {
+  const [state, dispatch] = useReducer(weatherReducer, initialState);
   return (
-    <div className="App">
-      <SearchArea />
-    </div>
+    <stateContext.Provider value={state}>
+      <dispatchContext.Provider value={dispatch}>
+        <div className="App">
+          <SearchArea />
+          <Graph />
+        </div>
+      </dispatchContext.Provider>
+    </stateContext.Provider>
   );
 }
 
